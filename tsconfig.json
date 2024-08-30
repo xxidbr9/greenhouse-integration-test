@@ -5,13 +5,15 @@
     "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
-    "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
     "incremental": true,
+    "target": "ES2020",
+    "jsx": "preserve",
+    "baseUrl": "./",
+    "esModuleInterop": true,
     "plugins": [
       {
         "name": "next"

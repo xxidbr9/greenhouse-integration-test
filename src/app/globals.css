@@ -63,6 +63,9 @@
   * {
     @apply border-border;
   }
+  html {
+    -webkit-text-size-adjust: 100%; /* Prevent auto-resizing */
+  }
   body {
     @apply bg-background text-foreground;
   }

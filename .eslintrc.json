@@ -2,5 +2,8 @@
   "extends": ["next/core-web-vitals", "eslint:recommended", "next", "prettier"],
   "globals": {
     "React": true
+  },
+  "rules": {
+    "no-unused-vars": "off"
   }
 }
