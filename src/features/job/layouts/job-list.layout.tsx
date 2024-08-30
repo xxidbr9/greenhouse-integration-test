@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SearchIcon } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useCallback, useEffect } from "react";
+import { Suspense, useCallback, useEffect, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getAllOfficesPublic } from "@/features/office/networks";
 import { getAllDepartmentsPublic } from "@/features/departement/networks";
@@ -22,6 +22,7 @@ import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { Skeleton } from "@/components/ui/skeleton";
 type Props = {};
 
 export const JobListLayout = (props: Props) => {
@@ -130,7 +131,7 @@ const OfficeList = () => {
   const pathname = usePathname();
   const router = useRouter();
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryFn: getAllOfficesPublic,
     queryKey: ["all_office"],
   });
@@ -158,8 +159,12 @@ const OfficeList = () => {
   };
 
   return (
-    <div className="flex flex-col gap-y-4 pl-4 px-8">
+    <div className="flex flex-col gap-y-4 pl-4 px-8 pb-4">
       <span className="font-semibold">Location</span>
+      {isLoading &&
+        Array.from({ length: 3 }).map((_, idx) => (
+          <Skeleton key={idx} className="h-4 w-full" />
+        ))}
       <RadioGroup
         defaultValue={defaultValue}
         className="space-y-1"
@@ -189,7 +194,7 @@ const DepartmentList = () => {
   const pathname = usePathname();
   const router = useRouter();
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryFn: getAllDepartmentsPublic,
     queryKey: ["all_department"],
   });
@@ -218,6 +223,10 @@ const DepartmentList = () => {
   return (
     <div className="flex flex-col gap-y-4 border-b pl-4 px-8 pb-4">
       <span className="font-semibold">Department</span>
+      {isLoading &&
+        Array.from({ length: 3 }).map((_, idx) => (
+          <Skeleton key={idx} className="h-4 w-full" />
+        ))}
       <RadioGroup defaultValue={defaultValue} className="space-y-1">
         {data?.data.map((department) => (
           <div className="flex items-center space-x-3" key={department.id}>
@@ -241,19 +250,27 @@ const DepartmentList = () => {
 
 const JobsList = () => {
   const searchParams = useSearchParams();
-  const params = new URLSearchParams(searchParams);
+  const params = useMemo(
+    () => new URLSearchParams(searchParams),
+    [searchParams],
+  );
 
   const query = Object.fromEntries(params);
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryFn: () => getAllJobsPublic(query),
-    queryKey: ["all_jobs", query],
+    queryKey: ["all_jobs", params.toString()],
   });
   return (
     <div className="flex flex-col gap-y-4 my-10 flex-1 border-l-[1px] px-8">
       <h2 className="text-4xl font-semibold">
         All open jobs ({data?.data.length || 0}){" "}
       </h2>
+      {isLoading &&
+        Array.from({ length: 3 }).map((_, idx) => (
+          <Skeleton key={idx} className="h-[102px] w-full" />
+        ))}
       {data?.data.map((job) => <JobItem data={job} key={job.id} />)}
+      {!!data && data?.data.length <= 0 && <div>Empty</div>}
     </div>
   );
 };
