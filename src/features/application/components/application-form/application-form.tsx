@@ -464,13 +464,13 @@ export default function ApplicationForm(props: ApplicationFormProps) {
           </h1>
           <div className="flex h-5 items-center space-x-2 text-sm">
             <div>{data?.job_post_detail.location.name}</div>
-            {data.job_detail.custom_fields.employment_type && (
+            {data?.job_detail.custom_fields.employment_type && (
               <>
                 <Separator orientation="vertical" />
                 <div>{data.job_detail.custom_fields.employment_type}</div>
               </>
             )}
-            {data.job_detail.departments[0].name && (
+            {data?.job_detail.departments[0].name && (
               <>
                 <Separator orientation="vertical" />
                 <div>{data.job_detail.departments[0].name}</div>

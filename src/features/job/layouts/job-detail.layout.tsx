@@ -38,13 +38,13 @@ const JobDetailLayout = async (props: Props) => {
           </span>
           <div className="flex h-5 items-center space-x-2 text-sm">
             <div>{data?.job_post_detail.location.name}</div>
-            {data.job_detail.custom_fields.employment_type && (
+            {data?.job_detail.custom_fields.employment_type && (
               <>
                 <Separator orientation="vertical" />
                 <div>{data.job_detail.custom_fields.employment_type}</div>
               </>
             )}
-            {data.job_detail.departments[0].name && (
+            {data?.job_detail.departments[0].name && (
               <>
                 <Separator orientation="vertical" />
                 <div>{data.job_detail.departments[0].name}</div>
@@ -59,7 +59,7 @@ const JobDetailLayout = async (props: Props) => {
           <span className="text-lg font-semibold">Descriptions</span>
           <article
             dangerouslySetInnerHTML={{
-              __html: data?.job_post_detail.content || {},
+              __html: data?.job_post_detail.content || "",
             }}
             className=""
           />
