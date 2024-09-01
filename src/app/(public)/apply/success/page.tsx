@@ -9,7 +9,7 @@ import React, { useEffect } from "react";
 
 type Props = {};
 
-const page = (props: Props) => {
+const SuccessPage = (props: Props) => {
   const handleConfetti = () => {
     const duration = 5 * 1000;
     const animationEnd = Date.now() + duration;
@@ -81,4 +81,4 @@ const page = (props: Props) => {
   );
 };
 
-export default page;
+export default SuccessPage;

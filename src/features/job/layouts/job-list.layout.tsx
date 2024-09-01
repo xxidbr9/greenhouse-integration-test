@@ -44,7 +44,9 @@ export const JobListLayout = (props: Props) => {
           <Form />
         </Suspense>
       </div>
-      <ListJobs />
+      <Suspense>
+        <ListJobs />
+      </Suspense>
     </main>
   );
 };
@@ -130,15 +132,6 @@ const OfficeList = () => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
-
-  const { data, isLoading } = useQuery({
-    queryFn: getAllOfficesPublic,
-    queryKey: ["all_office"],
-  });
-  if (data?.data && data?.data.length <= 0) return;
-
-  const defaultValue = searchParams.get(key) || "";
-
   const createQueryString = useCallback(
     (name: string, value: string) => {
       const params = new URLSearchParams(searchParams.toString());
@@ -152,6 +145,14 @@ const OfficeList = () => {
     },
     [searchParams],
   );
+
+  const { data, isLoading } = useQuery({
+    queryFn: getAllOfficesPublic,
+    queryKey: ["all_office"],
+  });
+  if (data?.data && data?.data.length <= 0) return;
+
+  const defaultValue = searchParams.get(key) || "";
 
   const handleValueChange = (val: string) => {
     const params = createQueryString(key, val === defaultValue ? "" : val);
@@ -193,15 +194,6 @@ const DepartmentList = () => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
-
-  const { data, isLoading } = useQuery({
-    queryFn: getAllDepartmentsPublic,
-    queryKey: ["all_department"],
-  });
-  if (data?.data && data?.data.length <= 0) return;
-
-  const defaultValue = searchParams.get(key) || "";
-
   const createQueryString = useCallback(
     (name: string, value: string) => {
       const params = new URLSearchParams(searchParams.toString());
@@ -215,6 +207,14 @@ const DepartmentList = () => {
     },
     [searchParams],
   );
+
+  const { data, isLoading } = useQuery({
+    queryFn: getAllDepartmentsPublic,
+    queryKey: ["all_department"],
+  });
+  if (data?.data && data?.data.length <= 0) return;
+
+  const defaultValue = searchParams.get(key) || "";
 
   const handleValueChange = (val: string) => {
     const params = createQueryString(key, val === defaultValue ? "" : val);

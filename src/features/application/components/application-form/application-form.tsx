@@ -48,10 +48,11 @@ import { toast } from "sonner";
 import { Education } from "../../types/apply";
 import { parseToApplicationCandidate } from "../../helpers/parse-to-apply-candidate";
 import { UploadApiResponse } from "cloudinary";
-import { NetworkType } from "@/@types/networks";
+import { NetworkType, ResponseType } from "@/@types/networks";
 import { applyJobPublic } from "../../networks/apply-job.network";
 import { attachCVPublic } from "../../networks/attach-cv.network";
 import { useRouter } from "next/navigation";
+import { EducationItemType } from "@/features/education/types/education";
 
 export const formSchema = z.object({
   first_name: z.string().min(1, "First name is required"),
@@ -786,97 +787,14 @@ export default function ApplicationForm(props: ApplicationFormProps) {
                       <Controller
                         name={`educations.${index}.school`}
                         control={control}
-                        render={() => {
-                          const [open, setOpen] = useState(false);
-                          return (
-                            <React.Fragment>
-                              <Popover open={open} onOpenChange={setOpen}>
-                                <PopoverTrigger asChild>
-                                  <Button
-                                    variant="outline"
-                                    role="combobox"
-                                    aria-expanded={open}
-                                    className="w-full justify-between"
-                                  >
-                                    {watch(`educations.${index}.school`)
-                                      ? schoolData?.data.find(
-                                          (school) =>
-                                            school.name.toString() ===
-                                            watch(`educations.${index}.school`),
-                                        )?.name || "Other (Custom)"
-                                      : "Select school..."}
-                                    <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50 -mr-1" />
-                                  </Button>
-                                </PopoverTrigger>
-                                <PopoverContent
-                                  className="w-full p-0 left-0"
-                                  align="start"
-                                >
-                                  <Command className="w-full">
-                                    <CommandInput
-                                      placeholder="Search school..."
-                                      className="h-9"
-                                    />
-                                    <CommandList>
-                                      <CommandEmpty>
-                                        No School found.
-                                      </CommandEmpty>
-                                      <CommandGroup>
-                                        {schoolData?.data.map((school) => (
-                                          <CommandItem
-                                            key={school.id}
-                                            value={school.name}
-                                            onSelect={(currentValue) => {
-                                              setValue(
-                                                `educations.${index}.school`,
-                                                currentValue,
-                                              );
-                                              setOpen(false);
-                                            }}
-                                          >
-                                            {school.name}
-                                            <CheckIcon
-                                              className={cn(
-                                                "ml-auto h-4 w-4",
-                                                watch(
-                                                  `educations.${index}.school`,
-                                                ) === school.id.toString()
-                                                  ? "opacity-100"
-                                                  : "opacity-0",
-                                              )}
-                                            />
-                                          </CommandItem>
-                                        ))}
-                                        <CommandItem
-                                          value={"other"}
-                                          onSelect={(currentValue) => {
-                                            setValue(
-                                              `educations.${index}.school`,
-                                              currentValue,
-                                            );
-                                            setOpen(false);
-                                          }}
-                                        >
-                                          Other (Custom)
-                                          <CheckIcon
-                                            className={cn(
-                                              "ml-auto h-4 w-4",
-                                              watch(
-                                                `educations.${index}.school`,
-                                              ) === "custom"
-                                                ? "opacity-100"
-                                                : "opacity-0",
-                                            )}
-                                          />
-                                        </CommandItem>
-                                      </CommandGroup>
-                                    </CommandList>
-                                  </Command>
-                                </PopoverContent>
-                              </Popover>
-                            </React.Fragment>
-                          );
-                        }}
+                        render={() => (
+                          <EducationSchool
+                            index={index}
+                            schoolData={schoolData}
+                            setValue={setValue}
+                            watch={watch}
+                          />
+                        )}
                       />
                     </div>
                     {watch(`educations.${index}.school`) === "other" && (
@@ -955,3 +873,84 @@ export default function ApplicationForm(props: ApplicationFormProps) {
     </div>
   );
 }
+
+const EducationSchool = (props: {
+  index: number;
+  watch: any;
+  schoolData: ResponseType<EducationItemType[]> | undefined;
+  setValue: any;
+}) => {
+  const { index, schoolData, setValue, watch } = props;
+  const [open, setOpen] = useState(false);
+  return (
+    <React.Fragment>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            role="combobox"
+            aria-expanded={open}
+            className="w-full justify-between"
+          >
+            {watch(`educations.${index}.school`)
+              ? schoolData?.data.find(
+                  (school) =>
+                    school.name.toString() ===
+                    watch(`educations.${index}.school`),
+                )?.name || "Other (Custom)"
+              : "Select school..."}
+            <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50 -mr-1" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-full p-0 left-0" align="start">
+          <Command className="w-full">
+            <CommandInput placeholder="Search school..." className="h-9" />
+            <CommandList>
+              <CommandEmpty>No School found.</CommandEmpty>
+              <CommandGroup>
+                {schoolData?.data.map((school) => (
+                  <CommandItem
+                    key={school.id}
+                    value={school.name}
+                    onSelect={(currentValue) => {
+                      setValue(`educations.${index}.school`, currentValue);
+                      setOpen(false);
+                    }}
+                  >
+                    {school.name}
+                    <CheckIcon
+                      className={cn(
+                        "ml-auto h-4 w-4",
+                        watch(`educations.${index}.school`) ===
+                          school.id.toString()
+                          ? "opacity-100"
+                          : "opacity-0",
+                      )}
+                    />
+                  </CommandItem>
+                ))}
+                <CommandItem
+                  value={"other"}
+                  onSelect={(currentValue) => {
+                    setValue(`educations.${index}.school`, currentValue);
+                    setOpen(false);
+                  }}
+                >
+                  Other (Custom)
+                  <CheckIcon
+                    className={cn(
+                      "ml-auto h-4 w-4",
+                      watch(`educations.${index}.school`) === "custom"
+                        ? "opacity-100"
+                        : "opacity-0",
+                    )}
+                  />
+                </CommandItem>
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
+    </React.Fragment>
+  );
+};
