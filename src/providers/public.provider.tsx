@@ -1,11 +1,8 @@
 "use client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React, { useState } from "react";
-const ReactQueryDevtoolsProduction = React.lazy(() =>
-  import("@tanstack/react-query-devtools/production").then((d) => ({
-    default: d.ReactQueryDevtools,
-  })),
-);
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
 type Props = {
   children?: React.ReactNode;
 };
@@ -25,7 +22,7 @@ const PublicProvider = (props: Props) => {
   return (
     <QueryClientProvider client={queryClient}>
       {props.children}
-      <ReactQueryDevtoolsProduction />
+      <ReactQueryDevtools />
     </QueryClientProvider>
   );
 };
