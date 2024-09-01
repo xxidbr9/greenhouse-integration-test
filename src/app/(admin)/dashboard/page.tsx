@@ -22,7 +22,7 @@ export default async function DemoPage() {
 
   return (
     <div className="container mx-auto py-10" suppressHydrationWarning>
-      <DataTable columns={columns} data={data} />
+      {/* <DataTable columns={columns} data={data} /> */}
       <Toaster />
     </div>
   );
