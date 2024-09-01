@@ -21,8 +21,8 @@ export default async function DemoPage() {
   const data = await getData({ page: 1, perPage: 10 });
 
   return (
-    <div className="container mx-auto py-10" suppressHydrationWarning>
-      {/* <DataTable columns={columns} data={data} /> */}
+    <div className="container mx-auto py-10">
+      <DataTable columns={columns} data={data} />
       <Toaster />
     </div>
   );
