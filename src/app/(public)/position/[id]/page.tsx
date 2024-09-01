@@ -8,7 +8,9 @@ type Props = {
 };
 
 const Page = async (props: Props) => {
-  const resp = await fetch(`http://localhost:3000/api/jobs/${props.params.id}`);
+  const resp = await fetch(
+    `${process.env.NEXT_PUBLIC_LOCAL_URL}/api/jobs/${props.params.id}`,
+  );
   const json = await resp.json();
   const data = (await json.data) as {
     job_post_detail: JobDetailType;
