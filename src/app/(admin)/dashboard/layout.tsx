@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import PublicProvider from "@/providers/public.provider";
 import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
@@ -29,9 +27,7 @@ export default function AdminLayout({
           content="black-translucent"
         ></meta>
       </head>
-      <body className={inter.className}>
-        <PublicProvider>{children}</PublicProvider>
-      </body>
+      <body className={inter.className}>{children}</body>
       <Toaster />
     </html>
   );
