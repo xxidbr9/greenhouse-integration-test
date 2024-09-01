@@ -30,7 +30,6 @@ export default function RootLayout({
         ></meta>
       </head>
       <body className={inter.className}>{children}</body>
-      <Toaster offset={98} />
     </html>
   );
 }
