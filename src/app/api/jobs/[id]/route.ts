@@ -1,6 +1,9 @@
 // import { getAllOffices } from '@/features/office/networks';
 import { getAllJobs } from "@/features/job/networks/get-all-jobs.network";
-import { getDetailJobs } from "@/features/job/networks/get-detail-job.network";
+import {
+  getDetailJob,
+  getDetailJobs,
+} from "@/features/job/networks/get-detail-job.network";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
@@ -9,9 +12,15 @@ export async function GET(req: Request) {
 
     const splitUrl = url.pathname.split("/");
     const id = splitUrl[splitUrl.length - 1];
-    const resp = await getDetailJobs({ id });
+    const [job_post_detail, job_detail] = await Promise.all([
+      getDetailJobs({ id }),
+      getDetailJob({ id }),
+    ]);
     return NextResponse.json(
-      { message: "success get job data", data: resp },
+      {
+        message: "success get job data",
+        data: { job_post_detail, job_detail },
+      },
       { status: 200 },
     );
   } catch (e) {
