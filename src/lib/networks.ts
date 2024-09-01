@@ -12,7 +12,9 @@ export const greenHouseApi = wretch(process.env.GREENHOUSE_API_URL, {
   .errorType("json")
   .resolve((r) => r.json());
 
-export const localApi = wretch("/api", { mode: "cors" })
+export const localApi = wretch(process.env.NEXT_PUBLIC_LOCAL_URL + "/api", {
+  mode: "cors",
+})
   .addon(FormDataAddon)
   .addon(QueryStringAddon)
   .errorType("json")
