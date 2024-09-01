@@ -1,6 +1,7 @@
 import { CandidateType } from "@/features/candidate/types/candidate";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
+import { Toaster } from "sonner";
 
 async function getData({
   page,
@@ -22,6 +23,7 @@ export default async function DemoPage() {
   return (
     <div className="container mx-auto py-10" suppressHydrationWarning>
       <DataTable columns={columns} data={data} />
+      <Toaster />
     </div>
   );
 }
